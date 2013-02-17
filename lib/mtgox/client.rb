@@ -23,8 +23,11 @@ module MtGox
     # @return [String]
     # @example
     #   MtGox.address
-    def address
-      post('/api/0/btcAddress.php')['addr']
+    #   MtGox.address "My Receive Address"
+    #   MtGox.address "My Receive Address With A Callback", "http://www.example.com/mtgox_receive_callback"
+    def address(description=nil, callback_url=nil)
+      params = {'description' => description, 'ipn' => callback_url}.delete_if{|k, v| v.nil?}
+      post('/api/0/btcAddress.php', params)['addr']
     end
 
 

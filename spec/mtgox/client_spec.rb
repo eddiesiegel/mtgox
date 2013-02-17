@@ -21,6 +21,26 @@ describe MtGox::Client do
         should have_been_made
       address.should == '171dH9Uum6wWLSwH2g8g2yto6SG7NEGyXG'
     end
+
+    context "with a description" do
+      it "should send the description and fetch a deposit address" do
+        address = @client.address("Some Description")
+        a_post('/api/0/btcAddress.php').
+          with(body: test_body({'description' => 'Some Description'})).
+          should have_been_made
+        address.should == '171dH9Uum6wWLSwH2g8g2yto6SG7NEGyXG'
+      end
+    end
+
+    context "with a description and callback url" do
+      it "should send the description and callback url and fetch a deposit address" do
+        address = @client.address("Some Description", "http://www.example.com/my_callback")
+        a_post('/api/0/btcAddress.php').
+          with(body: test_body({'description' => 'Some Description', 'ipn' => 'http://www.example.com/my_callback'})).
+          should have_been_made
+        address.should == '171dH9Uum6wWLSwH2g8g2yto6SG7NEGyXG'
+      end
+    end
   end
 
   describe '#ticker' do
