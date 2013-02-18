@@ -20,14 +20,14 @@ module MtGox
 
     # Fetch a deposit address
     # @authenticated true
+    # @param args [Hash] a hash with optional keys `description` - a description that will appear in your history when this BTC address receives a deposit and `ipn` - a URL that mtgox will ping whenever this address receives funds
     # @return [String]
     # @example
     #   MtGox.address
-    #   MtGox.address "My Receive Address"
-    #   MtGox.address "My Receive Address With A Callback", "http://www.example.com/mtgox_receive_callback"
-    def address(description=nil, callback_url=nil)
-      params = {'description' => description, 'ipn' => callback_url}.delete_if{|k, v| v.nil?}
-      post('/api/0/btcAddress.php', params)['addr']
+    #   MtGox.address 'description' => 'My Address'
+    #   MtGox.address 'description' => 'My Address', 'ipn' => 'http://www.example.com/mtgox_receive_callback'
+    def address(args={})
+      post('/api/0/btcAddress.php', args)['addr']
     end
 
 

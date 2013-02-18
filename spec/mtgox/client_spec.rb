@@ -24,7 +24,7 @@ describe MtGox::Client do
 
     context "with a description" do
       it "should send the description and fetch a deposit address" do
-        address = @client.address("Some Description")
+        address = @client.address 'description' => 'Some Description'
         a_post('/api/0/btcAddress.php').
           with(body: test_body({'description' => 'Some Description'})).
           should have_been_made
@@ -34,7 +34,7 @@ describe MtGox::Client do
 
     context "with a description and callback url" do
       it "should send the description and callback url and fetch a deposit address" do
-        address = @client.address("Some Description", "http://www.example.com/my_callback")
+        address = @client.address 'description' => 'Some Description', 'ipn' => 'http://www.example.com/my_callback'
         a_post('/api/0/btcAddress.php').
           with(body: test_body({'description' => 'Some Description', 'ipn' => 'http://www.example.com/my_callback'})).
           should have_been_made
